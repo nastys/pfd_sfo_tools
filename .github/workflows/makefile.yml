@@ -1,0 +1,49 @@
+name: Makefile CI
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install build tools
+        if: runner.os != 'Windows'
+        run: |
+          if [ "$RUNNER_OS" = "Linux" ]; then
+            sudo apt-get update
+            sudo apt-get install -y build-essential
+          fi
+        shell: bash
+  
+      - name: Build pfdtool
+        run: |
+          cd pfd_sfo_tools/pfdtool/src
+          make
+        shell: bash
+  
+      - name: Build sfopatcher
+        run: |
+          cd pfd_sfo_tools/sfopatcher/src
+          make
+        shell: bash
+  
+      - name: Upload pfdtool
+        uses: actions/upload-artifact@v5.0.0
+        with:
+          name: pfdtool-${{ runner.os }}
+          path: pfd_sfo_tools/pfdtool/src/pfdtool
+  
+      - name: Upload sfopatcher
+        uses: actions/upload-artifact@v5.0.0
+        with:
+          name: sfopatcher-${{ runner.os }}
+          path: pfd_sfo_tools/sfopatcher/src/sfopatcher
