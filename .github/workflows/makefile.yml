@@ -26,13 +26,13 @@ jobs:
   
       - name: Build pfdtool
         run: |
-          cd pfd_sfo_tools/pfdtool/src
+          cd pfdtool/src
           make
         shell: bash
   
       - name: Build sfopatcher
         run: |
-          cd pfd_sfo_tools/sfopatcher/src
+          cd sfopatcher/src
           make
         shell: bash
   
@@ -40,10 +40,10 @@ jobs:
         uses: actions/upload-artifact@v5.0.0
         with:
           name: pfdtool-${{ runner.os }}
-          path: pfd_sfo_tools/pfdtool/src/pfdtool
+          path: pfdtool/src/pfdtool
   
       - name: Upload sfopatcher
         uses: actions/upload-artifact@v5.0.0
         with:
           name: sfopatcher-${{ runner.os }}
-          path: pfd_sfo_tools/sfopatcher/src/sfopatcher
+          path: sfopatcher/src/sfopatcher
